@@ -10,125 +10,295 @@
 
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://www.highcharts.com/js/themes/dark-unica.js"></script>
+<!-- <script src="http://www.highcharts.com/js/themes/dark-unica.js"></script> -->
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container4" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
 </body>
 
 <script type="text/javascript">
-var chartNames = ["Battery Current", "Battery Voltage", "Panel Voltage", "Panel Power"];
-var axisNames = ["Current (mA)", "Voltage (mV)", "Voltage (mV)", "Power (W)"];
+var chartNames = ["Battery Voltage", "Battery Current", "Panel Voltage", "Panel Power"];
+var axisNames = ["Voltage (mV)", "Current (mA)", "Voltage (mV)", "Power (W)"];
+
+var containerNames = ['container1', 'container2', 'container3', 'container4'];
+
+var chartNumber = 0;
 
 var options;
-var lines;
-theme = 'dark-unica';
+
+function getOptions(count) {
+   return {
+        chart: {
+            renderTo: containerNames[count],
+            defaultSeriesType: 'scatter',
+            type: 'scatter'
+        },
+        title: {
+            text: chartNames[count]
+        },
+        xAxis: {
+            type: 'datetime',
+            // categories: []
+            title: {
+                    text: 'Time'
+                },
+            labels: {
+                    overflow: 'justify'
+                }
+        },
+        yAxis: {
+            title: {
+                text: axisNames[count]
+            }
+        },
+        series: [],
+
+        plotOptions: {
+            scatter: {
+                dashstyle: 'Solid',
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
+
+                    
+                },
+                series: {
+                connectNulls: true
+            }
+            
+        }
+    };
+}
+
+function getSeries(count) {
+    var obj = {
+                    data: []
+                };
+    obj.name = chartNames[count];
+    return obj;
+}
+
+//theme = 'dark-unica';
 $(function () {
 
-options = {
-    chart: {
-        renderTo: 'container',
-        defaultSeriesType: 'scatter',
-        type: 'scatter'
-    },
-    title: {
-        text: chartNames[0]
-    },
-    xAxis: {
-        type: 'datetime',
-        // categories: []
-        title: {
-                text: 'Time'
-            },
-        labels: {
-                overflow: 'justify'
-            }
-    },
-    yAxis: {
-        title: {
-            text: axisNames[0]
-        }
-    },
-    series: [],
+    var options0 = getOptions(0);
+    var options1 = getOptions(1);
+    var options2 = getOptions(2);
+    var options3 = getOptions(3);
 
-    plotOptions: {
-        scatter: {
-            dashstyle: 'Solid',
-                lineWidth: 1,
-                states: {
-                    hover: {
-                        lineWidth: 2
+    var series0 = getSeries(0);
+    var series1 = getSeries(1);
+    var series2 = getSeries(2);
+    var series3 = getSeries(3);
+
+        $.get('bobodata.csv', function(data) {
+        // Split the lines
+        var lines = data.split('\n');
+        // var series = {
+        //             data: []
+        //         };
+        //         series.name = chartNames[counter];
+        
+        // Iterate over the lines and add categories or series
+        $.each(lines, function(lineNo, line) {
+            var items = line.split(',');
+            
+            var row0 = [];
+            var row1 = [];
+            var row2 = [];
+            var row3 = [];
+
+            var itemPrev = "";
+            // header line containes categories
+            // if (lineNo == 0) {
+            //     $.each(items, function(itemNo, item) {
+            //         if (itemNo > 0) options.xAxis.categories.push(item);
+            //     });
+            // }
+            
+            // the rest of the lines contain data with their name in the first 
+            // position
+            
+                
+                $.each(items, function(itemNo, item) {
+                    if (itemNo == 0) {
+                        itemPrev = item;
                     }
-                },
-                marker: {
-                    enabled: false
-                },
+                    else if (itemNo == 1) {
+                        row0.push(new Date(itemPrev+" "+item));
+                        row1.push(new Date(itemPrev+" "+item));
+                        row2.push(new Date(itemPrev+" "+item));
+                        row3.push(new Date(itemPrev+" "+item));
+                    }
+                    else if (itemNo == 2){
+                        row0.push(parseFloat(item));
+                    }
+                    else if (itemNo == 3){
+                        row1.push(parseFloat(item));
+                    }
+                    else if (itemNo == 4){
+                        row2.push(parseFloat(item));
+                    }
+                    else if (itemNo == 5){
+                        row3.push(parseFloat(item));
+                    }
 
+                    
+                     
+                    
+                });
+
+                series0.data.push(row0);
+                series1.data.push(row1);
+                series2.data.push(row2);
+                series3.data.push(row3);
                 
-            },
-            series: {
-            connectNulls: true
+        
+            
+            
+        });
+        
+        options0.series.push(series0);
+        options1.series.push(series1);
+        options2.series.push(series2);
+        options3.series.push(series3);
+
+        // Create the chart
+        Highcharts.setOptions({
+        global: {
+            useUTC: false
         }
-        
-    }
-};
-
-$.get('batteryCurrent.csv', function(data) {
-    // Split the lines
-    var lines = data.split('\n');
-    var series = {
-                data: []
-            };
-            series.name = chartNames[0];
-    
-    // Iterate over the lines and add categories or series
-    $.each(lines, function(lineNo, line) {
-        var items = line.split(',');
-        
-        var row = [];
-        var itemPrev = "";
-        // header line containes categories
-        // if (lineNo == 0) {
-        //     $.each(items, function(itemNo, item) {
-        //         if (itemNo > 0) options.xAxis.categories.push(item);
-        //     });
-        // }
-        
-        // the rest of the lines contain data with their name in the first 
-        // position
-        
-            
-            $.each(items, function(itemNo, item) {
-                if (itemNo == 0) {
-                    itemPrev = item;
-                }
-                else if (itemNo == 1) {
-                    row.push(new Date(itemPrev+" "+item));
-                }
-                else {
-                    row.push(parseFloat(item));
-                }
-
-                
-                 
-                
-            });
-            series.data.push(row);
-            
-    
-        
-        
     });
-    options.series.push(series);
-    // Create the chart
-    Highcharts.setOptions({
-    global: {
-        useUTC: false
-    }
-});
-    var chart = new Highcharts.Chart(options);
-});
+        var chart0 = new Highcharts.Chart(options0);
+        var chart1 = new Highcharts.Chart(options1);
+        var chart2 = new Highcharts.Chart(options2);
+        var chart3 = new Highcharts.Chart(options3);
+    });
 
+
+
+    // for (var counter = 0; counter < chartNames.length; counter++) {
+
+
+    // options = {
+    //     chart: {
+    //         renderTo: containerNames[counter],
+    //         defaultSeriesType: 'scatter',
+    //         type: 'scatter'
+    //     },
+    //     title: {
+    //         text: chartNames[counter]
+    //     },
+    //     xAxis: {
+    //         type: 'datetime',
+    //         // categories: []
+    //         title: {
+    //                 text: 'Time'
+    //             },
+    //         labels: {
+    //                 overflow: 'justify'
+    //             }
+    //     },
+    //     yAxis: {
+    //         title: {
+    //             text: axisNames[counter]
+    //         }
+    //     },
+    //     series: [],
+
+    //     plotOptions: {
+    //         scatter: {
+    //             dashstyle: 'Solid',
+    //                 lineWidth: 1,
+    //                 states: {
+    //                     hover: {
+    //                         lineWidth: 2
+    //                     }
+    //                 },
+    //                 marker: {
+    //                     enabled: false
+    //                 },
+
+                    
+    //             },
+    //             series: {
+    //             connectNulls: true
+    //         }
+            
+    //     }
+    // };
+
+    // $.get('bobodata.csv', function(data) {
+    //     // Split the lines
+    //     var lines = data.split('\n');
+    //     var series = {
+    //                 data: []
+    //             };
+    //             series.name = chartNames[counter];
+        
+    //     // Iterate over the lines and add categories or series
+    //     $.each(lines, function(lineNo, line) {
+    //         var items = line.split(',');
+            
+    //         var row = [];
+    //         var itemPrev = "";
+    //         // header line containes categories
+    //         // if (lineNo == 0) {
+    //         //     $.each(items, function(itemNo, item) {
+    //         //         if (itemNo > 0) options.xAxis.categories.push(item);
+    //         //     });
+    //         // }
+            
+    //         // the rest of the lines contain data with their name in the first 
+    //         // position
+            
+                
+    //             $.each(items, function(itemNo, item) {
+    //                 if (itemNo == 0) {
+    //                     itemPrev = item;
+    //                 }
+    //                 else if (itemNo == 1) {
+    //                     row.push(new Date(itemPrev+" "+item));
+    //                 }
+    //                 // else if (itemNo == (counter + 2)){
+    //                 //     row.push(parseFloat(item));
+    //                 // }
+
+    //                 else {
+    //                     row.push(parseFloat(item));
+    //                 }
+
+                    
+                     
+                    
+    //             });
+    //             series.data.push(row);
+                
+        
+            
+            
+    //     });
+    //     options.series.push(series);
+    //     // Create the chart
+    //     Highcharts.setOptions({
+    //     global: {
+    //         useUTC: false
+    //     }
+    // });
+    //     var chart = new Highcharts.Chart(options);
+    // });
+
+
+    // }
 
 });
 
