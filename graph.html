@@ -63,6 +63,7 @@ function getOptions(count) {
                     lineWidth: 1,
                     states: {
                         hover: {
+                            lineWidth: 1
                         }
                     },
                     marker: {
@@ -87,13 +88,15 @@ function getSeries(count) {
     return obj;
 }
 
-//theme = 'dark-unica';
-$(function () {
-
-    var options0 = getOptions(0);
+var options0 = getOptions(0);
     var options1 = getOptions(1);
     var options2 = getOptions(2);
     var options3 = getOptions(3);
+
+//theme = 'dark-unica';
+$(function () {
+
+    
 
     var series0 = getSeries(0);
     var series1 = getSeries(1);
