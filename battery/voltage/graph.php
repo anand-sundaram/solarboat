@@ -3,21 +3,46 @@
     <head>
     <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <title>Battery Voltage</title>
     </head>
 
+
     <body>
+
+        <?php 
+
+        $path = $_SERVER['DOCUMENT_ROOT'] . "/";
+
+        include($path."header.php");
+
+        ?>
 
 
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <!-- <script src="http://www.highcharts.com/js/themes/dark-unica.js"></script> -->
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
+
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="http://solarboat.d1.comp.nus.edu.sg/battery/voltage/graph.php">Graph</a></li>
+      <li role="presentation" ><a href="http://solarboat.d1.comp.nus.edu.sg/battery/voltage/table.php">Table</a></li>
+
+
+    </ul>
+
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-    <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-    <p></p>
+
 
     </body>
     <?php
