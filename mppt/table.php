@@ -7,7 +7,7 @@
         include($path."libraries.php");
     ?>
 
-    <title>Load Current</title>
+    <title>MPPT</title>
     </head>
 
     <body>
@@ -15,8 +15,8 @@
     <?php  include($path."header.php");  ?>
         
     <ul class="nav nav-tabs">
-      <li role="presentation" ><a href="http://solarboat.d1.comp.nus.edu.sg/load/current/graph.php">Graph</a></li>
-      <li role="presentation" class="active"><a href="http://solarboat.d1.comp.nus.edu.sg/load/current/table.php">Table</a></li>
+      <li role="presentation" ><a href="http://solarboat.d1.comp.nus.edu.sg/mppt/graph.php">Graph</a></li>
+      <li role="presentation" class="active"><a href="http://solarboat.d1.comp.nus.edu.sg/mppt/table.php">Table</a></li>
 
 
     </ul>
@@ -48,12 +48,16 @@
     
     </form>
 
+
 <div class="col-md-8" align=" middle">
-    <table class="table table-hover table-bordered" style="margin: 0px auto;">
+    <table class="table table-hover table-bordered" align="center" style="margin: 0px auto;">
 
 <tr>
     <th>Time</th>
-    <th>Load Current (A)</th> 
+    <th>Panel Voltage (mV)</th> 
+    <th>Panel Power (W)</th> 
+    <th>Battery Voltage (mV)</th> 
+    <th>Battery Current (mA)</th> 
   </tr>
 
     <?php
@@ -65,13 +69,13 @@
         $end = $_GET['enddate'];
 
 
-        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from y2015m4Current where time <= '".$end.
-            "' and time >='".$start."' order by time desc;");
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), panel_voltage, panel_power, battery_voltage, battery_current from y2015m4MPPT where time <= '".$end.
+            "' and time >='".$start."' order by time asc;");
     }
 
     else {
 
-        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from y2015m4Current order by time desc;");
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), panel_voltage, panel_power, battery_voltage, battery_current from y2015m4MPPT order by time asc;");
     }
 
 
@@ -81,7 +85,9 @@
 <tr>
     <td><?php echo $row[0]; ?></td>
     <td><?php echo $row[1]; ?></td>
-
+    <td><?php echo $row[2]; ?></td>
+    <td><?php echo $row[3]; ?></td>
+    <td><?php echo $row[4]; ?></td>
     
 </tr>
 

@@ -1,30 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+    <html lang="en">
+    <head>
     <meta charset="utf-8">
-    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>    
+    <?php 
+        $path = $_SERVER['DOCUMENT_ROOT'] . "/";
+        include($path."libraries.php");
+    ?>   
     <title>Load Current</title>
 </head>
 
 <body>
 
-    <?php 
-
-        $path = $_SERVER['DOCUMENT_ROOT'] . "/";
-
-        include($path."header.php");
-
-        ?>
+    <?php  include($path."header.php");  ?>
 
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="http://solarboat.d1.comp.nus.edu.sg/load/current/graph.php">Graph</a></li>
@@ -33,11 +20,32 @@
 
     </ul>
 
+    <br>
+<br>
+<form action="graph.php" class="form-horizontal">
 
 
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <!-- <script src="http://www.highcharts.com/js/themes/dark-unica.js"></script> -->
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+  <div class="form-group">
+    <label for="startdatepicker" class="col-sm-2 control-label">Start Date</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="startdatepicker" name="startdate">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="enddatepicker" class="col-sm-2 control-label">End Date</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="enddatepicker" name="enddate">
+    </div>
+  </div>
+   <!--  <p >  Start Date: <input type="text" id="startdatepicker" name="startdate"></p>
+    <p >  End Date: <input type="text" id="enddatepicker" name="enddate"></p> -->
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <input class="btn btn-default" type="submit" value="Submit">
+    </div>
+  </div>
+    
+    </form>
 
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
@@ -46,12 +54,32 @@
 
 $db = new mysqli("localhost","root", "", "bobodata");
 
-$result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %T'), loadCurrent from y2015m4Current order by time asc;");
+if(isset($_GET['startdate']) && isset($_GET['enddate'])) {
+        $start = $_GET['startdate'];
+        $end = $_GET['enddate'];
 
+
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from y2015m4Current where time <= '".$end.
+            "' and time >='".$start."' order by time asc;");
+    }
+
+    else {
+
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from y2015m4Current order by time asc;");
+    }
 
 ?>
 
 <script type="text/javascript">
+
+$(function() {
+         $( "#startdatepicker" ).datepicker({minDate: new Date(2015, 3, 18), dateFormat: "yy-mm-dd"});
+    });
+
+    $(function() {
+         $( "#enddatepicker" ).datepicker({minDate: new Date(2015, 3, 19), dateFormat: "yy-mm-dd"});
+    });
+
 
 var options = {
     chart: {
