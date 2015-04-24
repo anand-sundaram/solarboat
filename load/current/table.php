@@ -60,18 +60,23 @@
 
     $db = new mysqli("localhost","root", "", "bobodata");
 
+    $tableName = "y".date("Y")."m".date("n");
+    $currentDate = date("Y-m-d");
+    $nextDate = date("Y-m-d", strtotime("+1 day"));    
+
     if(isset($_GET['startdate']) && isset($_GET['enddate'])) {
         $start = $_GET['startdate'];
         $end = $_GET['enddate'];
 
 
-        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from y2015m4Current where time <= '".$end.
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from ".$tableName."Current where time <= '".$end.
             "' and time >='".$start."' order by time desc;");
     }
 
     else {
 
-        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from y2015m4Current order by time desc;");
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), loadCurrent from ".$tableName."Current where time <= '".$nextDate.
+            "' and time >='".$currentDate."' order by time desc;");
     }
 
 

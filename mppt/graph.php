@@ -21,6 +21,7 @@
 
 <br>
 <br>
+
 <form action="graph.php" class="form-horizontal">
 
 
@@ -153,6 +154,10 @@ $(function () {
 
     $db = new mysqli("localhost","root", "", "bobodata");
 
+    $tableName = "y".date("Y")."m".date("n");
+    $currentDate = date("Y-m-d");
+    $nextDate = date("Y-m-d", strtotime("+1 day"));
+
 
     if(isset($_GET['startdate']) && isset($_GET['enddate'])) {
         $start = $_GET['startdate'];
@@ -165,7 +170,8 @@ $(function () {
 
     else {
 
-        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), panel_voltage, panel_power, battery_voltage, battery_current from y2015m4MPPT order by time asc;");
+        $result = $db->query("select DATE_FORMAT(time,'%m/%d/%Y %H:%i'), panel_voltage, panel_power, battery_voltage, battery_current from ".$tableName."MPPT where time <= '".$nextDate.
+            "' and time >= '".$currentDate."' order by time asc;");
     }
     ?>
 
