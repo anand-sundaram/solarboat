@@ -54,9 +54,9 @@
 
 <tr>
     <th>Time</th>
-    <th>Panel Voltage (mV)</th> 
+    <th>Panel Voltage (V)</th> 
     <th>Panel Power (W)</th> 
-    <th>Battery Voltage (mV)</th> 
+    <th>Battery Voltage (V)</th> 
     <th>Battery Current (mA)</th> 
   </tr>
 
@@ -89,9 +89,9 @@
 
 <tr>
     <td><?php echo $row[0]; ?></td>
-    <td><?php echo $row[1]; ?></td>
+    <td><?php echo $row[1]/1000; ?></td>
     <td><?php echo $row[2]; ?></td>
-    <td><?php echo $row[3]; ?></td>
+    <td><?php echo $row[3]/1000; ?></td>
     <td><?php echo $row[4]; ?></td>
     
 </tr>

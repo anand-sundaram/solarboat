@@ -66,7 +66,7 @@ $(function() {
     });
 
 var chartNames = ["Panel Voltage", "Panel Power", "Battery Voltage", "Battery Current"];
-var axisNames = ["Voltage (mV)", "Power (W)", "Voltage (mV)", "Current (mA)"];
+var axisNames = ["Voltage (V)", "Power (W)", "Voltage (V)", "Current (mA)"];
 
 var containerNames = ['container1', 'container2', 'container3', 'container4'];
 
@@ -196,9 +196,9 @@ $(function () {
     row2.push(Date.UTC(d.getFullYear(),  d.getMonth(),  d.getDate(), d.getHours(), d.getMinutes()));
     row3.push(Date.UTC(d.getFullYear(),  d.getMonth(),  d.getDate(), d.getHours(), d.getMinutes()));
 
-    row0.push(parseFloat("<?php echo $row[1]; ?>"));
+    row0.push(parseFloat("<?php echo $row[1]; ?>")/1000);
     row1.push(parseFloat("<?php echo $row[2]; ?>"));
-    row2.push(parseFloat("<?php echo $row[3]; ?>"));
+    row2.push(parseFloat("<?php echo $row[3]; ?>")/1000);
     row3.push(parseFloat("<?php echo $row[4]; ?>"));
 
     series0.data.push(row0);
