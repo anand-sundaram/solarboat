@@ -12,60 +12,70 @@
 <body>
 <?php  include($path."header.php");  ?>
 
-<div class="col-md-4">
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">Power from Panels</h3>
+<div class="row">
+  <div class="col-md-4">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Power from Panels</h3>
+    </div>
+    <h1><div class="panel-body" id="panelPower">
+      
+    </div></h1>
   </div>
-  <h1><div class="panel-body" id="panelPower">
-    
-  </div></h1>
-</div>
+  </div>
+
+  <div class="col-md-4">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Voltage Across Panels</h3>
+    </div>
+    <h1><div class="panel-body" id="panelVoltage">
+      
+    </div></h1>
+  </div>
+  </div>
+
+  <div class="col-md-4">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Charging Current</h3>
+    </div>
+    <h1><div class="panel-body" id="chargingCurrent">
+      
+    </div></h1>
+  </div>
+  </div>
+
+  <div class="col-md-4">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Battery Voltage</h3>
+    </div>
+    <h1><div class="panel-body" id="batteryVoltage">
+      
+    </div></h1>
+  </div>
+  </div>
+
+  <div class="col-md-4">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">Discharging Current</h3>
+    </div>
+    <h1><div class="panel-body" id="dischargingCurrent">
+      
+    </div></h1>
+  </div>
+  </div>
 </div>
 
-<div class="col-md-4">
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">Voltage Across Panels</h3>
+<br>
+<div class="row">
+  <div class="col-md-4">
+    <div class="alert alert-warning" role="alert" id="time">Last read: </div>
   </div>
-  <h1><div class="panel-body" id="panelVoltage">
-    
-  </div></h1>
-</div>
 </div>
 
-<div class="col-md-4">
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">Charging Current</h3>
-  </div>
-  <h1><div class="panel-body" id="chargingCurrent">
-    
-  </div></h1>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">Battery Voltage</h3>
-  </div>
-  <h1><div class="panel-body" id="batteryVoltage">
-    
-  </div></h1>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">Discharging Current</h3>
-  </div>
-  <h1><div class="panel-body" id="dischargingCurrent">
-    
-  </div></h1>
-</div>
-</div>
 
 </body>
 
@@ -81,10 +91,11 @@ $(document).ready(function() {
 		        success: function(data) {
 		        	var arr = JSON.parse(data);
 		        	$("#panelPower").html(arr[0] + " W");
-		        	$("#panelVoltage").html(arr[1] + " mV");
+		        	$("#panelVoltage").html(parseInt(arr[1])/1000 + " V");
 		        	$("#chargingCurrent").html(arr[2] + " mA");
 		        	$("#batteryVoltage").html(arr[3] + " V");
 		        	$("#dischargingCurrent").html(arr[4] + " A");
+              $("#time").append(arr[5]);
 		        },
 		        async: false
 		    });
