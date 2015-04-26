@@ -72,7 +72,7 @@
 <br>
 <div class="row">
   <div class="col-md-4">
-    <div class="alert alert-warning" role="alert" id="time">Last read: </div>
+    <div class="alert alert-warning" role="alert" id="time"></div>
   </div>
 </div>
 
@@ -95,7 +95,7 @@ $(document).ready(function() {
 		        	$("#chargingCurrent").html(arr[2] + " mA");
 		        	$("#batteryVoltage").html(arr[3] + " V");
 		        	$("#dischargingCurrent").html(arr[4] + " A");
-              $("#time").append(arr[5]);
+              $("#time").html("Last read: " + arr[5]);
 		        },
 		        async: false
 		    });
