@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-import os, subprocess, sqlite3, datetime
+import os, subprocess, sqlite3, datetime, math
 
 output = subprocess.check_output("cat /sys/class/saradc/saradc_ch0", shell=True)
 
 reading = int(output.strip())
 print reading
 
-current = reading
+current = int(100*(math.fabs(0.9133*reading - 385.61))) / 100.0
 
 print current
 

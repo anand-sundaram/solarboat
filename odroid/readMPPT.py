@@ -1,4 +1,4 @@
-import serial, requests
+import serial, requests, time
 from datetime import datetime
 
 import sqlite3
@@ -6,11 +6,12 @@ import sqlite3
 conn = sqlite3.connect('/bobodata/database.txt')
 c = conn.cursor()
 
-ser = serial.Serial('/dev/ttyUSB2', 19200, timeout=100)
+timeout = time.time() + 30;
+ser = serial.Serial('/dev/ttyUSB0', 19200, timeout=100)
 
 flag = True
 
-while flag == True:
+while flag == True and time.time() < timeout:
   line = ser.readline()
   print(line)
   

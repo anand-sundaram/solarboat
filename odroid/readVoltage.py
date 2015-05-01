@@ -7,7 +7,7 @@ output = subprocess.check_output("cat /sys/class/saradc/saradc_ch1", shell=True)
 reading = int(output.strip())
 print reading
 
-voltage = reading*0.0882 - 0.014
+voltage = int(100*(reading*0.0882 - 0.014)) / 100.0
 
 print voltage
 
